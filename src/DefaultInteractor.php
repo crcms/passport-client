@@ -38,7 +38,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function refresh(string $token): object
     {
-        return $this->service->method('post')->call('passport', config('passport-client.routes.refresh'), $this->requestParams(['token' => $token]));
+        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.refresh'), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -47,7 +47,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function user(string $token): object
     {
-        return $this->service->method('post')->call('passport', config('passport-client.routes.user'), $this->requestParams(['token' => $token]));
+        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.user'), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -56,7 +56,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function check(string $token): bool
     {
-        $this->service->method('post')->call(config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
+        $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
         return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
     }
 
@@ -66,7 +66,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function logout(string $token): bool
     {
-        $this->service->method('get')->call(config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
+        $this->service->method('get')->call(config('passport-client.service'), config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
         return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
     }
 
@@ -77,5 +77,14 @@ class DefaultInteractor implements InteractionContract
     protected function requestParams(array $params): array
     {
         return array_merge(['app_key' => config('passport-client.key'), 'app_secret' => config('passport-client.secret')], $params);
+    }
+
+    /**
+     * @param string $uri
+     * @return string
+     */
+    protected function passportUrl(string $uri): string
+    {
+        return config('passport-client.host') . '/' . ltrim($uri, '/');
     }
 }

@@ -12,6 +12,7 @@ namespace CrCms\Foundation\Passport\Client;
 use CrCms\Foundation\MicroService\Client\Service;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application;
 
 /**
  * Class PassportServiceProvider
@@ -23,15 +24,55 @@ class PassportServiceProvider extends ServiceProvider
      * @var bool
      */
     public $defer = true;
+    /**
+     * @var string
+     */
+    protected $namespaceName = 'passport-client';
+
+    /**
+     * @var string
+     */
+    protected $packagePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+    /**
+     * @return void
+     */
+    public function boot()
+    {
+        //move config path
+        if ($this->isLumen()) {
+
+        } else {
+            $this->publishes([
+                $this->packagePath . 'config/config.php' => config_path($this->namespaceName . ".php"),
+            ]);
+        }
+    }
 
     /**
      *
      */
     public function register()
     {
+        if ($this->isLumen()) {
+            $this->app->configure($this->namespaceName);
+        }
+
+        //merge config
+        $configFile = $this->packagePath . "config/config.php";
+        if (file_exists($configFile)) $this->mergeConfigFrom($configFile, $this->namespaceName);
+
         $this->app->bind(InteractionContract::class, function ($app) {
             return new DefaultInteractor($app->make(Service::class));
         });
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isLumen(): bool
+    {
+        return class_exists(Application::class) && $this->app instanceof Application;
     }
 
     /**
