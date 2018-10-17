@@ -7,10 +7,11 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Middleware;
+namespace CrCms\Foundation\Passport\Client\Middleware;
 
 use Closure;
 use CrCms\Foundation\ConnectionPool\Exceptions\RequestException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Http\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
  * Class AuthMiddleware
- * @package CrCms\Foundation\Passport\Middleware\Passport
+ * @package CrCms\Foundation\Passport\Client\Middleware
  */
 class AuthMiddleware extends AbstractPassportMiddleware
 {
@@ -62,7 +63,21 @@ class AuthMiddleware extends AbstractPassportMiddleware
         if ($result === true) {
             return $next($request);
         } else if (isset($statusCode) && $statusCode === 401) {
-            throw new UnauthorizedHttpException($token);
+            //throw new UnauthorizedHttpException($token);
+            throw new AuthenticationException(
+                'Unauthenticated.', [], $this->redirectTo($request)
+            );
         }
+    }
+
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return string
+     */
+    protected function redirectTo($request)
+    {
+        //
     }
 }

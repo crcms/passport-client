@@ -7,14 +7,14 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Middleware;
+namespace CrCms\Foundation\Passport\Client\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
 
 /**
  * Class UserMiddleware
- * @package CrCms\Foundation\Passport\Middleware
+ * @package CrCms\Foundation\Passport\Client\Middleware
  */
 class UserMiddleware extends AbstractPassportMiddleware
 {

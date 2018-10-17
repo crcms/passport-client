@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Middleware;
+namespace CrCms\Foundation\Passport\Client\Middleware;
 
 use CrCms\Foundation\App\Helpers\InstanceTrait;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class AbstractPassportMiddleware
- * @package CrCms\Foundation\Passport\Middleware\Passport
+ * @package CrCms\Foundation\Passport\Client\Middleware
  */
 abstract class AbstractPassportMiddleware
 {
