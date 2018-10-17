@@ -1,0 +1,32 @@
+{
+    "name": "crcms/passport-client",
+    "description": "CRCMS Passport Client",
+	"keywords": ["passport", "sso", "micro-service"],
+	"homepage": "https://github.com/crcms/passport-client",
+    "license": "MIT",
+    "require": {
+        "php":">=7.1",
+        "crcms/micro-service-client":"dev-master"
+    },
+	"autoload": {
+        "files": [
+        ],
+        "psr-4": {
+            "CrCms\\Foundation\\Passport\\Client\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CrCms\\Foundation\\Passport\\Client\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CrCms\\Foundation\\Passport\\Client\\PassportClientProvider"
+            ],
+            "aliases": {
+            }
+        }
+    }
+}
