@@ -9,14 +9,8 @@
 
 namespace CrCms\Foundation\Passport\Client;
 
-use CrCms\Foundation\Rpc\Client\Rpc;
-use CrCms\Foundation\Rpc\Contracts\ResponseContract;
-use CrCms\Foundation\Rpc\Contracts\RpcContract;
+use CrCms\Foundation\MicroService\Client\Service;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
-use GuzzleHttp\Exception\ClientException;
-use Exception;
 
 /**
  * Class DefaultInteractor
@@ -25,17 +19,17 @@ use Exception;
 class DefaultInteractor implements InteractionContract
 {
     /**
-     * @var RpcContract
+     * @var Service
      */
-    protected $rpc;
+    protected $service;
 
     /**
      * DefaultInteractor constructor.
-     * @param RpcContract $rpc
+     * @param Service $service
      */
-    public function __construct(Rpc $rpc)
+    public function __construct(Service $service)
     {
-        $this->rpc = $rpc;
+        $this->service = $service;
     }
 
     /**
@@ -44,7 +38,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function refresh(string $token): object
     {
-        return $this->rpc->call('passport', config('foundation.passport.routes.refresh'), $this->requestParams(['token' => $token]));
+        return $this->service->method('post')->call('passport', config('passport-client.routes.refresh'), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -53,7 +47,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function user(string $token): object
     {
-        return $this->rpc->call('passport', config('foundation.passport.routes.user'), $this->requestParams(['token' => $token]));
+        return $this->service->method('post')->call('passport', config('passport-client.routes.user'), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -62,8 +56,8 @@ class DefaultInteractor implements InteractionContract
      */
     public function check(string $token): bool
     {
-        $this->rpc->call(config('foundation.passport.routes.check'), $this->requestParams(['token' => $token]));
-        return $this->rpc->getClient()->getStatusCode() === 204 || $this->rpc->getClient()->getStatusCode() === 200;
+        $this->service->method('post')->call(config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
+        return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
     }
 
     /**
@@ -72,8 +66,8 @@ class DefaultInteractor implements InteractionContract
      */
     public function logout(string $token): bool
     {
-        $this->rpc->method('get')->call(config('foundation.passport.routes.logout'), $this->requestParams(['token' => $token]));
-        return $this->rpc->getClient()->getStatusCode() === 204 || $this->rpc->getClient()->getStatusCode() === 200;
+        $this->service->method('get')->call(config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
+        return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
     }
 
     /**
@@ -82,6 +76,6 @@ class DefaultInteractor implements InteractionContract
      */
     protected function requestParams(array $params): array
     {
-        return array_merge(['app_key' => config('foundation.passport.key'), 'app_secret' => config('foundation.passport.secret')], $params);
+        return array_merge(['app_key' => config('passport-client.key'), 'app_secret' => config('passport-client.secret')], $params);
     }
 }

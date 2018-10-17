@@ -9,12 +9,12 @@
 
 namespace CrCms\Foundation\Passport\Client;
 
-use CrCms\Foundation\Rpc\Client;
+use CrCms\Foundation\MicroService\Client\Service;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class SsoServiceProvider
+ * Class PassportServiceProvider
  * @package CrCms\Foundation\Passport\Client
  */
 class PassportServiceProvider extends ServiceProvider
@@ -30,7 +30,7 @@ class PassportServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(InteractionContract::class, function ($app) {
-            return new DefaultInteractor($app->make(Client\Rpc::class));
+            return new DefaultInteractor($app->make(Service::class));
         });
     }
 

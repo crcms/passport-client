@@ -9,8 +9,6 @@
 
 namespace CrCms\Foundation\Passport\Client\Contracts;
 
-use CrCms\Foundation\Rpc\Contracts\ResponseContract;
-
 /**
  * Interface InteractionContract
  * @package CrCms\Foundation\Passport\Client\Contracts

@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CrCms\\Foundation\\Passport\\Client\\PassportClientProvider"
+                "CrCms\\Foundation\\Passport\\Client\\PassportServiceProvider"
             ],
             "aliases": {
             }
