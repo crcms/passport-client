@@ -45,6 +45,7 @@ return [
 
     'routes' => [
         'login' => '/api/v1/login',
+        'register' => '/api/v1/register',
         'refresh' => '/api/v1/refresh-token',
         'user' => '/api/v1/user',
         'check' => '/api/v1/check-login',

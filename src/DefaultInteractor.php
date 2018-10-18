@@ -33,6 +33,24 @@ class DefaultInteractor implements InteractionContract
     }
 
     /**
+     * @param array $data
+     * @return object
+     */
+    public function login(array $data): object
+    {
+        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.login'), $this->requestParams($data));
+    }
+
+    /**
+     * @param array $data
+     * @return object
+     */
+    public function register(array $data): object
+    {
+        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.register'), $this->requestParams($data));
+    }
+
+    /**
      * @param string $token
      * @return object
      */

@@ -16,6 +16,18 @@ namespace CrCms\Foundation\Passport\Client\Contracts;
 interface InteractionContract
 {
     /**
+     * @param array $data
+     * @return object
+     */
+    public function login(array $data): object;
+
+    /**
+     * @param array $data
+     * @return object
+     */
+    public function register(array $data): object;
+
+    /**
      * @param string $token
      * @return object
      */
