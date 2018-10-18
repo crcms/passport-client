@@ -47,6 +47,9 @@ class PassportServiceProvider extends ServiceProvider
                 $this->packagePath . 'config/config.php' => config_path($this->namespaceName . ".php"),
             ]);
         }
+
+        //load middleware alias
+        $this->aliasMiddleware();
     }
 
     /**
@@ -65,6 +68,25 @@ class PassportServiceProvider extends ServiceProvider
         $this->app->bind(InteractionContract::class, function ($app) {
             return new DefaultInteractor($app->make(Service::class));
         });
+    }
+
+    /**
+     * Alias the middleware.
+     *
+     * @return void
+     */
+    protected function aliasMiddleware()
+    {
+        $router = $this->app['router'];
+
+        $routerMiddleware = [
+            'passport.user' => \CrCms\Foundation\Passport\Client\Middleware\UserMiddleware::class,
+            'passport.auth' => \CrCms\Foundation\Passport\Client\Middleware\AuthMiddleware::class,
+        ];
+
+        foreach ($routerMiddleware as $alias => $middleware) {
+            $router->aliasMiddleware($alias, $middleware);
+        }
     }
 
     /**
