@@ -23,7 +23,7 @@ class PassportServiceProvider extends ServiceProvider
     /**
      * @var bool
      */
-    public $defer = true;
+    public $defer = false;
     /**
      * @var string
      */
