@@ -19,5 +19,5 @@ interface PassportUserContract
      * @param array $attributes
      * @return PassportUserContract
      */
-    public function getPassportUser(array $attributes): PassportUserContract;
+    public static function getPassportUser(array $attributes): PassportUserContract;
 }

@@ -29,10 +29,10 @@ class UserMiddleware extends AbstractPassportMiddleware
         $response = $this->passport->user($this->token($request));
 
         if (is_null($user)) {
-            $user = $this->config->get('foundation.passport.user');
+            $user = $this->config->get('passport-client.user');
         }
 
-        $this->guard()->setUser(new $user((array)$response->data('data')));
+        $this->guard()->setUser($user::getPassportUser((array)$response->data));
 
         return $next($request);
     }
