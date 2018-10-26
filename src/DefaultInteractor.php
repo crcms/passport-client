@@ -75,7 +75,7 @@ class DefaultInteractor implements InteractionContract
     public function check(string $token): bool
     {
         $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
-        return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
+        return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
     }
 
     /**
@@ -85,7 +85,7 @@ class DefaultInteractor implements InteractionContract
     public function logout(string $token): bool
     {
         $this->service->method('get')->call(config('passport-client.service'), config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
-        return $this->service->getClient()->getStatusCode() === 204 || $this->service->getClient()->getStatusCode() === 200;
+        return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
     }
 
     /**
