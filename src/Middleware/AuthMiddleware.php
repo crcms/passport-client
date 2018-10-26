@@ -55,8 +55,6 @@ class AuthMiddleware extends AbstractPassportMiddleware
             if ($exception instanceof RequestException) {
                 $statusCode = $exception->getConnection()->getStatusCode();
                 $result = (bool)($statusCode >= 200 && $statusCode < 400);
-            } else {
-                throw $exception;
             }
         }
 
@@ -67,6 +65,8 @@ class AuthMiddleware extends AbstractPassportMiddleware
             throw new AuthenticationException(
                 'Unauthenticated.', [], $this->redirectTo($request)
             );
+        } else {
+            throw $exception;
         }
     }
 
