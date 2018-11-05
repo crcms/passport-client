@@ -11,6 +11,8 @@ namespace CrCms\Foundation\Passport\Client\Middleware;
 
 use Closure;
 use CrCms\Foundation\ConnectionPool\Exceptions\RequestException;
+use CrCms\Foundation\MicroService\Client\Exceptions\ServiceException;
+use CrCms\Foundation\MicroService\Client\ServiceData;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Exception;
@@ -32,40 +34,20 @@ class AuthMiddleware extends AbstractPassportMiddleware
     public function handle(Request $request, Closure $next)
     {
         $token = $this->token($request);
+        $response = $next($request);
 
-        try {
-            $result = $this->passport->check($token);
-            if ($result === false) {
-                try {
-                    $rpcResponse = $this->passport->refresh($token);
-                    /* @var Response $response */
-                    $response = $next($request);
-                    return $response->header('Authorization', $rpcResponse->data('data.token'));
-                } catch (Exception $exception) {
-                    if ($exception instanceof RequestException) {
-                        $statusCode = $exception->getConnection()->getStatusCode();
-                        $result = (bool)($statusCode >= 200 && $statusCode < 400);
-                    } else {
-                        throw $exception;
-                    }
-                }
-            }
-        } catch (Exception $exception) {
-            $result = false;
-            if ($exception instanceof RequestException) {
-                $statusCode = $exception->getConnection()->getStatusCode();
-                $result = (bool)($statusCode >= 200 && $statusCode < 400);
-            }
+        if ($this->passport->check($token)) {
+            return $response;
         }
 
-        if ($result === true) {
-            return $next($request);
-        } else if (isset($statusCode) && $statusCode === 401) {
-            //throw new UnauthorizedHttpException($token);
+        try {
+            $token = $this->passport->refresh($token);
+            return $response->header('Authorization', $token->data('data.token'));
+        } catch (ServiceException $exception) {
             throw new AuthenticationException(
-                'Unauthenticated.', [], $this->redirectTo($request)
+                'Unauthenticated.' . $exception->getMessage(), [], $this->redirectTo($request)
             );
-        } else {
+        } catch (Exception $exception) {
             throw $exception;
         }
     }

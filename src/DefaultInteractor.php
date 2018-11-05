@@ -9,6 +9,7 @@
 
 namespace CrCms\Foundation\Passport\Client;
 
+use CrCms\Foundation\MicroService\Client\Exceptions\ServiceException;
 use CrCms\Foundation\MicroService\Client\Service;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
 
@@ -74,8 +75,15 @@ class DefaultInteractor implements InteractionContract
      */
     public function check(string $token): bool
     {
-        $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
-        return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
+        try {
+            $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
+            return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
+        } catch (ServiceException $exception) {
+            if ($exception->getExceptionStatusCode() === 401) {
+                return false;
+            }
+            throw $exception;
+        }
     }
 
     /**
