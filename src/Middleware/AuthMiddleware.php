@@ -45,7 +45,7 @@ class AuthMiddleware extends AbstractPassportMiddleware
             return $response->header('Authorization', $token->data('data.token'));
         } catch (ServiceException $exception) {
             throw new AuthenticationException(
-                'Unauthenticated.' . $exception->getMessage(), [], $this->redirectTo($request)
+                'Unauthenticated.', [], $this->redirectTo($request)
             );
         } catch (Exception $exception) {
             throw $exception;
