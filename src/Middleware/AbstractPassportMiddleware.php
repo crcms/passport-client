@@ -9,7 +9,7 @@
 
 namespace CrCms\Foundation\Passport\Client\Middleware;
 
-use CrCms\Foundation\App\Helpers\InstanceTrait;
+use CrCms\Foundation\App\Helpers\InstanceConcern;
 use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
  */
 abstract class AbstractPassportMiddleware
 {
-    use InstanceTrait;
+    use InstanceConcern;
 
     /**
      * @var InteractionContract
