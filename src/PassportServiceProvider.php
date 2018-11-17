@@ -7,16 +7,16 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Client;
+namespace CrCms\Passport\Client;
 
-use CrCms\Foundation\MicroService\Client\Service;
-use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
+use CrCms\Microservice\Client\Service;
+use CrCms\Passport\Client\Contracts\InteractionContract;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 
 /**
  * Class PassportServiceProvider
- * @package CrCms\Foundation\Passport\Client
+ * @package CrCms\Passport\Client
  */
 class PassportServiceProvider extends ServiceProvider
 {
@@ -80,8 +80,8 @@ class PassportServiceProvider extends ServiceProvider
         $router = $this->app['router'];
 
         $routerMiddleware = [
-            'passport.user' => \CrCms\Foundation\Passport\Client\Middleware\UserMiddleware::class,
-            'passport.auth' => \CrCms\Foundation\Passport\Client\Middleware\AuthMiddleware::class,
+            'passport.user' => \CrCms\Passport\Client\Middleware\UserMiddleware::class,
+            'passport.auth' => \CrCms\Passport\Client\Middleware\AuthMiddleware::class,
         ];
 
         foreach ($routerMiddleware as $alias => $middleware) {

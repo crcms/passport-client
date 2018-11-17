@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Client\Middleware;
+namespace CrCms\Passport\Client\Middleware;
 
 use Closure;
 use CrCms\Foundation\ConnectionPool\Exceptions\RequestException;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 /**
  * Class AuthMiddleware
- * @package CrCms\Foundation\Passport\Client\Middleware
+ * @package CrCms\Passport\Client\Middleware
  */
 class AuthMiddleware extends AbstractPassportMiddleware
 {

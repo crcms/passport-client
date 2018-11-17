@@ -7,14 +7,14 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Client\Middleware;
+namespace CrCms\Passport\Client\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
 
 /**
  * Class UserMiddleware
- * @package CrCms\Foundation\Passport\Client\Middleware
+ * @package CrCms\Passport\Client\Middleware
  */
 class UserMiddleware extends AbstractPassportMiddleware
 {
@@ -32,7 +32,7 @@ class UserMiddleware extends AbstractPassportMiddleware
             $user = $this->config->get('passport-client.user');
         }
 
-        $this->guard()->setUser($user::getPassportUser((array)$response->data));
+        $this->guard()->setUser($user::getPassportUser($response->data('data')));
 
         return $next($request);
     }

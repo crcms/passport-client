@@ -7,15 +7,15 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Client;
+namespace CrCms\Passport\Client;
 
-use CrCms\Foundation\MicroService\Client\Exceptions\ServiceException;
-use CrCms\Foundation\MicroService\Client\Service;
-use CrCms\Foundation\Passport\Client\Contracts\InteractionContract;
+use CrCms\Passport\Client\Contracts\InteractionContract;
+use CrCms\Microservice\Client\Exceptions\ServiceException;
+use CrCms\Microservice\Client\Service;
 
 /**
  * Class DefaultInteractor
- * @package CrCms\Foundation\Passport\Client
+ * @package CrCms\Passport\Client
  */
 class DefaultInteractor implements InteractionContract
 {
@@ -39,7 +39,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function login(array $data): object
     {
-        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.login'), $this->requestParams($data));
+        return $this->service->call($this->callName(config('passport-client.routes.login')), $this->requestParams($data));
     }
 
     /**
@@ -48,7 +48,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function register(array $data): object
     {
-        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.register'), $this->requestParams($data));
+        return $this->service->call($this->callName(config('passport-client.routes.register')), $this->requestParams($data));
     }
 
     /**
@@ -57,7 +57,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function refresh(string $token): object
     {
-        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.refresh'), $this->requestParams(['token' => $token]));
+        return $this->service->call($this->callName(config('passport-client.routes.refresh')), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -66,7 +66,7 @@ class DefaultInteractor implements InteractionContract
      */
     public function user(string $token): object
     {
-        return $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.user'), $this->requestParams(['token' => $token]));
+        return $this->service->call($this->callName(config('passport-client.routes.user')), $this->requestParams(['token' => $token]));
     }
 
     /**
@@ -76,7 +76,7 @@ class DefaultInteractor implements InteractionContract
     public function check(string $token): bool
     {
         try {
-            $this->service->method('post')->call(config('passport-client.service'), config('passport-client.routes.check'), $this->requestParams(['token' => $token]));
+            $this->service->call($this->callName(config('passport-client.routes.check')), $this->requestParams(['token' => $token]));
             return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
         } catch (ServiceException $exception) {
             if ($exception->getExceptionStatusCode() === 401) {
@@ -92,8 +92,9 @@ class DefaultInteractor implements InteractionContract
      */
     public function logout(string $token): bool
     {
-        $this->service->method('get')->call(config('passport-client.service'), config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
-        return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
+        return true;
+        //$this->service->method('get')->call(config('passport-client.service'), config('passport-client.routes.logout'), $this->requestParams(['token' => $token]));
+        //return $this->service->getStatusCode() === 204 || $this->service->getStatusCode() === 200;
     }
 
     /**
@@ -106,11 +107,11 @@ class DefaultInteractor implements InteractionContract
     }
 
     /**
-     * @param string $uri
+     * @param string $name
      * @return string
      */
-    protected function passportUrl(string $uri): string
+    protected function callName(string $name): string
     {
-        return config('passport-client.host') . '/' . ltrim($uri, '/');
+        return config('passport-client.service') . '.' . $name;
     }
 }
