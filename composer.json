@@ -5,8 +5,7 @@
 	"homepage": "https://github.com/crcms/passport-client",
     "license": "MIT",
     "require": {
-        "php":">=7.1",
-        "crcms/microservice-client":"0.x-dev"
+        "php":">=7.1"
     },
 	"autoload": {
         "files": [
