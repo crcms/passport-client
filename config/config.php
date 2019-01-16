@@ -44,12 +44,12 @@ return [
     */
 
     'routes' => [
-        'login' => '/api/v1/login',
-        'register' => '/api/v1/register',
-        'refresh' => '/api/v1/refresh-token',
-        'user' => '/api/v1/user',
-        'check' => '/api/v1/check-login',
-        'logout' => '/api/v1/logout',
+        'login' => 'auth.login',
+        'register' => 'auth.register',
+        'refresh' => 'auth.refresh',
+        'user' => 'auth.user',
+        'check' => 'auth.check',
+        'logout' => 'auth.logout',
     ],
 
     /*

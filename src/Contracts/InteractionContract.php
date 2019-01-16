@@ -7,11 +7,11 @@
  * @copyright Copyright &copy; 2018 Rights Reserved CRCMS
  */
 
-namespace CrCms\Foundation\Passport\Client\Contracts;
+namespace CrCms\Passport\Client\Contracts;
 
 /**
  * Interface InteractionContract
- * @package CrCms\Foundation\Passport\Client\Contracts
+ * @package CrCms\Passport\Client\Contracts
  */
 interface InteractionContract
 {
